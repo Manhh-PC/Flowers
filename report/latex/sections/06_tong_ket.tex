@@ -1,0 +1,17 @@
+\section{Tổng kết và hướng phát triển}
+\subsection{Kết quả chính}
+Bài thực hành đã xây dựng quy trình từ ảnh thô đến dự đoán và đánh giá trên toàn bộ 102 lớp Oxford Flowers 102. Nội dung gồm kiểm tra nguồn và metadata, audit 8.189 ảnh, khảo sát phân phối, ba cách biểu diễn Pixel/HOG/HOG+HSV, K-NN và Cây quyết định, 18 thử tham số, thử nghiệm PCA, lưu mô hình và demo một ảnh.
+
+Mô hình cuối M8 được chọn bằng F1-macro validation 16,96\%, sử dụng HOG+HSV với K-NN \(k=9\), Manhattan. Trên test chính thức, mô hình đạt Accuracy \TestAccuracy\%, Precision-macro 23,83\%, Recall-macro 18,08\%, F1-macro \TestFOne\% và F1-weighted 14,22\%. Trên tập test không trùng, Accuracy là \CleanAccuracy\% và F1-macro \CleanFOne\%. Kết quả cho thấy bổ sung HSV hữu ích so với HOG đơn thuần trong cấu hình cố định, còn scale+PCA128 không cải thiện chất lượng ở thiết lập này.
+
+Mục tiêu xây dựng và kiểm chứng quy trình học máy được thực hiện, nhưng mục tiêu nhận dạng chính xác vẫn còn hạn chế. Báo cáo giữ nguyên các kết quả thấp và sự đảo thứ hạng M5/M8 giữa validation và test để phản ánh đúng bằng chứng. Sản phẩm phù hợp cho thực hành và phân tích thuật toán; chưa được coi là một hệ thống phân loại hoa tin cậy để triển khai rộng rãi.
+
+\subsection{Hướng phát triển có thể kiểm chứng}
+\begin{enumerate}
+\item \textbf{Tiền xử lý giữ tỷ lệ.} So sánh resize trực tiếp với resize giữ tỷ lệ kết hợp padding hoặc crop, giữ nguyên split và ngân sách thử nghiệm.
+\item \textbf{Đặc trưng màu theo vùng.} Bổ sung histogram HSV theo lưới hoặc vùng hoa để khảo sát vai trò của vị trí và nền. Có thể dùng ảnh phân đoạn như một thí nghiệm riêng, báo rõ khác biệt đầu vào.
+\item \textbf{Tăng dữ liệu hiệu dụng.} Thử xoay, lật hoặc thay đổi nhẹ màu trên train; các biến thể của một ảnh phải ở cùng train, không đưa sang validation/test.
+\item \textbf{Tách ảnh hưởng của scale và PCA.} Thử scaler riêng, PCA riêng và nhiều số thành phần với tiêu chí lựa chọn được xác định trước; không dùng kết quả test hiện tại để tiếp tục chọn tham số rồi báo như một đánh giá độc lập mới.
+\item \textbf{Mô hình mạnh hơn và demo.} Transfer learning có thể là phần mở rộng, đi kèm so sánh công bằng với phương án cổ điển. GUI, cơ chế từ chối ảnh ngoài phạm vi và hiệu chỉnh điểm tin cậy cần được kiểm chứng riêng.
+\end{enumerate}
+Những hướng trên chưa được thực hiện trong số liệu của báo cáo này. Nếu phát triển tiếp, cần dành dữ liệu đánh giá độc lập hoặc thiết kế lại quy trình đánh giá được giảng viên chấp thuận.

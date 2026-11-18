@@ -1,0 +1,16 @@
+true_label,predicted_label,true_name,predicted_name,count,share_of_true_class
+77,10,passion flower,globe thistle,42,0.18181818181818182
+46,27,wallflower,prince of wales feathers,41,0.23295454545454544
+77,33,passion flower,love in the mist,32,0.13852813852813853
+73,35,water lily,alpine sea holly,27,0.15517241379310345
+51,6,petunia,tiger lily,25,0.10504201680672269
+89,46,watercress,wallflower,25,0.1524390243902439
+73,27,water lily,prince of wales feathers,24,0.13793103448275862
+89,27,watercress,prince of wales feathers,23,0.1402439024390244
+77,29,passion flower,artichoke,22,0.09523809523809523
+51,11,petunia,snapdragon,22,0.09243697478991597
+78,27,lotus,prince of wales feathers,21,0.1794871794871795
+83,11,hibiscus,snapdragon,21,0.1891891891891892
+94,11,foxglove,snapdragon,20,0.14084507042253522
+88,27,cyclamen,prince of wales feathers,20,0.14925373134328357
+60,58,pink-yellow dahlia?,geranium,20,0.2247191011235955

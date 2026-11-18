@@ -1,0 +1,91 @@
+% Biên dịch bằng XeLaTeX hoặc Tectonic. Đường dẫn đều tương đối.
+% Đây là bố cục A4 tạm thời theo 6 phần bắt buộc, chưa phải template chính thức.
+% Nếu học phần cung cấp template riêng, giữ nội dung và chuyển vào template đó.
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\setmainfont{TeX Gyre Termes}}
+\IfFontExistsTF{Consolas}{\setmonofont{Consolas}}{\setmonofont{Latin Modern Mono}}
+\usepackage[left=2.7cm,right=2.3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{graphicx,booktabs,longtable,tabularx,array,amsmath,float,setspace,xcolor,caption,fancyhdr,enumitem,listings,hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue,pdftitle={Phân loại hoa Oxford Flowers 102 - FIT4013}}
+\setstretch{1.18}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{4pt}
+\setlength{\headheight}{16pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\refname}{Tài liệu tham khảo}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small FIT4013 - Nhập môn học máy}
+\fancyhead[R]{\small Đề tài 7: Phân loại hoa}
+\fancyfoot[C]{\thepage}
+\setlist[itemize]{itemsep=2pt,topsep=3pt,leftmargin=1.6em}
+\setlist[enumerate]{itemsep=2pt,topsep=3pt,leftmargin=1.8em}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,columns=fullflexible,keepspaces=true,showstringspaces=false,aboveskip=8pt,belowskip=8pt}
+\newcommand{\reportfigure}[4][0.98]{\begin{figure}[htbp]\centering\includegraphics[width=#1\linewidth]{#2}\caption{#3}\label{#4}\end{figure}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\input{thong_tin}
+\input{generated/so_lieu}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+{\large\bfseries \TenTruong\par}
+{\large \TenKhoa\par}
+\vspace{1.2cm}
+\rule{0.82\textwidth}{0.7pt}\par
+\vspace{0.65cm}
+{\Large\bfseries BÁO CÁO BÀI TẬP LỚN\par}
+\vspace{0.35cm}
+{\large Học phần: Nhập môn học máy - FIT4013\par}
+\vspace{1.1cm}
+{\LARGE\bfseries ĐỀ TÀI 7\par}
+\vspace{0.35cm}
+{\LARGE\bfseries PHÂN LOẠI HOA\par}
+\vspace{0.25cm}
+{\Large Oxford Flowers 102\par}
+\vspace{0.55cm}
+{\large Đặc trưng Pixel, HOG, HSV\par K-Nearest Neighbors và Cây quyết định\par}
+\vspace{1cm}
+\begin{tabular}{ll}
+Giảng viên hướng dẫn: & \GiangVien \\
+Lớp học phần: & \TenLop \\
+Nhóm thực hiện: & \TenNhom \\
+Năm học: & 2026-2027
+\end{tabular}\par
+\vspace{0.8cm}
+\begin{tabular}{ll}\toprule
+Họ và tên & Mã sinh viên\\\midrule
+\ThanhVienMot & \MaSVMot\\
+\ThanhVienHai & \MaSVHai\\
+% THÊM THÀNH VIÊN THỨ 3, 4 NẾU CÓ: Họ tên & Mã sinh viên\\
+\bottomrule\end{tabular}\par
+\vfill
+\DiaDiemNgayNop\par
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+{\small\setstretch{1.0}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_dat_van_de}
+\clearpage
+\input{sections/02_thiet_ke}
+\clearpage
+\input{sections/03_ma_nguon}
+\clearpage
+\input{sections/04_ket_qua}
+\clearpage
+\input{sections/05_thao_luan}
+\clearpage
+\input{sections/06_tong_ket}
+\clearpage
+\input{sections/tai_lieu_tham_khao}
+\clearpage
+{\small\setstretch{1.08}\input{sections/phu_luc}}
+\end{document}

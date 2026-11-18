@@ -1,0 +1,55 @@
+\section{Thiết kế giải pháp và quy trình học máy}
+\subsection{Quy trình và nguyên tắc tách tập}
+Quy trình gồm: kiểm tra tệp dữ liệu và metadata; audit và EDA; tiền xử lý; trích đặc trưng train/validation; huấn luyện; chọn siêu tham số trên validation; chốt mô hình; đánh giá test; phân tích lỗi; lưu mô hình và minh chứng. Tập test chỉ được dùng để đánh giá sau khi hoàn tất lựa chọn cấu hình.
+
+Những phép biến đổi cố định trên từng ảnh như resize hoặc histogram không học tham số thống kê từ tập test. Riêng StandardScaler và PCA trong thí nghiệm M9 chỉ được fit bằng train trong một Pipeline. Validation không được ghép vào train sau khi chọn mô hình trong phiên bản này. Mọi mô hình vì thế học từ cùng 1.020 ảnh train, giúp giữ điều kiện so sánh nhất quán.
+
+\subsection{Tiền xử lý và ba cách biểu diễn}
+Ảnh được đọc, sửa hướng theo EXIF nếu có, chuyển RGB và nội suy bilinear về 64\(\times\)64. Giá trị pixel được chuyển sang float32 rồi chia 255 để nằm trong khoảng [0, 1]. Không dùng tăng cường dữ liệu trong các thí nghiệm chính.
+
+\textbf{Pixel RGB.} Làm phẳng ảnh thành vector \(64\times64\times3=12.288\) phần tử. Biểu diễn giữ màu và vị trí pixel nhưng nhạy với dịch chuyển, nền và góc chụp. M1 dùng biểu diễn này làm baseline bắt buộc.
+
+\textbf{HOG.} Chuyển ảnh resize sang xám rồi tính histogram hướng gradient. HOG mô tả cấu trúc biên bằng thống kê gradient theo vùng \cite{hog}. Cấu hình gồm 9 hướng, cell 8\(\times\)8, block 2\(\times\)2 cell, chuẩn hóa block L2-Hys và \texttt{transform\_sqrt=True}. Với 8\(\times\)8 cell và 7\(\times\)7 vị trí block, số chiều là
+\[
+d_{\mathrm{HOG}}=7\times7\times2\times2\times9=1.764.
+\]
+Vector sau đó được chuẩn hóa L2 toàn cục. Việc dùng ảnh xám làm mất thông tin màu, nên không mặc định rằng HOG sẽ tốt hơn pixel trong bài toán này.
+
+\textbf{HOG kết hợp HSV.} Chuyển ảnh RGB sang HSV và tính 16 bin cho từng kênh H, S, V trên [0, 1], tạo 48 phần tử. Histogram được chuẩn hóa L2; hai nhóm đặc trưng được ghép với trọng số bằng nhau:
+\[
+z=\frac{1}{\sqrt{2}}\left[\frac{h}{\max(\|h\|_2,\epsilon)},
+\frac{c}{\max(\|c\|_2,\epsilon)}\right],\qquad \epsilon=10^{-12}.
+\]
+Số chiều cuối cùng là 1.764 + 48 = 1.812. Cách chuẩn hóa từng nhóm tránh để độ lớn của một nhóm lấn át nhóm còn lại chỉ do thang đo. Histogram HSV bổ sung màu nhưng không lưu vị trí không gian của màu.
+
+\reportfigure{figures/04_preprocessing_hog_hsv.pdf}{Các bước tiền xử lý và biểu diễn của cùng một ảnh train.}{fig:features}
+
+\subsection{Thuật toán và các phương án so sánh}
+K-NN gán nhãn theo biểu quyết của \(k\) mẫu train gần nhất. Bản thực hành dùng trọng số đều, tìm kiếm brute-force và thử khoảng cách Euclidean/Manhattan \cite{knn}. K-NN lưu các mẫu train nên thời gian fit thường ngắn, trong khi dự đoán cần tính khoảng cách tới các mẫu đã lưu.
+
+Cây quyết định phân chia không gian đặc trưng theo các ngưỡng để tăng độ thuần của nút. Bài thực hành thử tiêu chí Gini và entropy, đồng thời giới hạn độ sâu để khảo sát mức độ phức tạp \cite{tree}. Một cây riêng lẻ dễ giải thích ở mức quy tắc chia nhưng có thể thiếu ổn định với dữ liệu ít và nhiều chiều.
+
+\begin{table}[H]\centering\small
+\caption{Các phương án đã xác định trước khi đánh giá test.}\label{tab:models}
+\begin{tabularx}{\linewidth}{lY Y}\toprule
+Mã & Đặc trưng và mô hình & Vai trò/cấu hình chính\\\midrule
+M0 & Dummy, most frequent & Mốc phụ, không thay baseline pixel\\
+M1 & Pixel + K-NN & Baseline: \(k=5\), Euclidean\\
+M2 & Pixel + Cây & Độ sâu 20, Gini\\
+M3 & HOG + K-NN & Giữ cấu hình K-NN của M1\\
+M4 & HOG + Cây & Giữ cấu hình cây của M2\\
+M5 & HOG+HSV + K-NN & Giữ cấu hình K-NN của M3\\
+M6 & HOG + K-NN chọn tham số & Chọn \(k\), khoảng cách trên validation\\
+M7 & HOG + Cây chọn tham số & Chọn độ sâu, criterion trên validation\\
+M8 & HOG+HSV + K-NN chọn tham số & Chọn \(k\), khoảng cách trên validation\\
+M9 & Scale + PCA128 + K-NN & Đầu vào HOG+HSV; K-NN giống M8\\\bottomrule
+\end{tabularx}
+\end{table}
+
+M9 giảm 1.812 chiều xuống 128 qua StandardScaler và PCA. So sánh với M8 đo tác động của toàn bộ scale+PCA, không tách riêng ảnh hưởng của PCA.
+
+\subsection{Chọn tham số và mô hình}
+Với K-NN, thử \(k\in\{3,5,9\}\), khoảng cách thuộc \{Euclidean, Manhattan\}. Với cây, thử \texttt{max\_depth} thuộc \{10, 20, None\}, \texttt{criterion} thuộc \{gini, entropy\}. Có 6 cấu hình cho mỗi họ M6, M7, M8, tổng cộng 18 thử nghiệm. Đây là validation holdout, không phải cross-validation.
+
+Chọn theo F1-macro validation (M1-M9); hòa điểm giữ cấu hình đầu. Seed: 42.
+

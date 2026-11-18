@@ -1,0 +1,52 @@
+\section{Đặt vấn đề và phân tích yêu cầu}
+\subsection{Bối cảnh, mục tiêu và phạm vi}
+Phân loại hoa từ ảnh là bài toán học có giám sát, trong đó hệ thống nhận một ảnh và gán ảnh vào một lớp hoa đã biết. Bài toán có thể hỗ trợ tra cứu hình ảnh hoặc học tập về thực vật. Tuy nhiên, sự khác nhau về góc chụp, nền, ánh sáng và hình dáng khiến các ảnh cùng lớp không hoàn toàn giống nhau, trong khi nhiều lớp lại có ngoại hình gần giống.
+
+Bài thực hành sử dụng Oxford Flowers 102 theo yêu cầu đề tài 7. Đầu vào là ảnh màu; đầu ra là một nhãn nguyên từ 1 đến 102 kèm tên lớp tiếng Anh. Mục tiêu là xây dựng quy trình có thể chạy lại, so sánh baseline pixel với đặc trưng cổ điển, áp dụng K-NN và Cây quyết định, sau đó phân tích kết quả bằng nhiều độ đo. Hệ thống chỉ phân loại trong 102 lớp đã học; không có chức năng nhận biết ảnh không phải hoa hoặc loài hoa ngoài bộ dữ liệu.
+
+Thực nghiệm triển khai bằng Python trong Jupyter Notebook trên VS Code, sử dụng CPU. Báo cáo trình bày đúng sáu phần theo hướng dẫn học phần \cite{fit4013}. Kết quả được lấy từ lần chạy \texttt{\RunID}; các con số trong bảng là số đo thực tế, không phải kết quả minh họa hoặc kiểm thử bằng dữ liệu giả.
+
+\subsection{Nguồn và cấu trúc dữ liệu}
+Oxford Flowers 102 do nhóm Visual Geometry Group, University of Oxford công bố. Trang dữ liệu mô tả 102 lớp hoa, mỗi lớp có từ 40 đến 258 ảnh, với biến thiên về kích thước đối tượng, tư thế và ánh sáng \cite{oxford}. Các tệp sử dụng trong thực nghiệm gồm:
+\begin{itemize}
+\item \texttt{102flowers.tgz}: ảnh gốc; giải nén thành thư mục \texttt{data/jpg/}.
+\item \texttt{imagelabels.mat}: nhãn phân loại; ghép theo mã ảnh trong tên tệp, không ghép theo thứ tự duyệt thư mục.
+\item \texttt{setid.mat}: danh sách mã ảnh của ba tập train, validation và test.
+\end{itemize}
+Tệp \texttt{102segmentations.tgz} đã được chuẩn bị nhưng không dùng trong thí nghiệm chính. Ảnh phân đoạn không thay thế nhãn lớp. Chương trình kiểm tra MD5 các tệp dữ liệu cần thiết và lưu nguồn kiểm chứng trong \texttt{source\_checksums.json}. Tên lớp được đối chiếu với ánh xạ của Torchvision \cite{torchvision}.
+
+\begin{table}[H]\centering
+\caption{Quy mô dữ liệu theo cách chia chính thức của Oxford.}\label{tab:split}
+\begin{tabular}{lrrl}\toprule
+Tập & Số ảnh & Số lớp & Vai trò\\\midrule
+Train & 1.020 & 102 & Huấn luyện, 10 ảnh/lớp\\
+Validation & 1.020 & 102 & Chọn cấu hình, 10 ảnh/lớp\\
+Test Oxford & 6.149 & 102 & Đánh giá sau khi chốt mô hình\\\midrule
+Tổng cộng & 8.189 & 102 & Giữ nguyên dữ liệu gốc\\\bottomrule
+\end{tabular}
+\end{table}
+Việc tập test lớn hơn train là đặc điểm của cách chia chính thức, không phải lỗi cần đảo lại. Train và validation cân bằng theo lớp, còn số ảnh mỗi lớp trong test khác nhau. Vì vậy, báo cáo dùng F1-macro để lựa chọn mô hình và bổ sung Accuracy cùng các độ đo khác khi đánh giá.
+
+\reportfigure{figures/01_class_distribution.pdf}{Phân phối số ảnh theo lớp và tập dữ liệu, sinh từ metadata của 8.189 ảnh.}{fig:distribution}
+
+\subsection{Kiểm tra chất lượng và dữ liệu trùng}
+Chương trình đọc toàn bộ ảnh bằng Pillow, kiểm tra nhãn và tính SHA-256 trên kích thước cùng dữ liệu RGB sau giải mã. Kết quả có 0 ảnh hỏng, 0 nhãn thiếu và 0 nhóm ảnh giống nhau nhưng xung đột nhãn. Toàn bộ 8.189 ảnh có chế độ RGB, 3 kênh màu. Chiều rộng nằm trong khoảng 500-1.024 pixel, chiều cao 500-1.168 pixel; trung vị tương ứng là 667 và 500 pixel. Ảnh được resize về cùng kích thước trước khi trích đặc trưng.
+
+Audit phát hiện 8 ảnh thuộc 4 nhóm trùng RGB hoàn toàn. Hai nhóm xuất hiện giữa các tập khác nhau và hai nhóm chỉ nằm trong test. Không có nhóm trùng giữa train và validation.
+\begin{table}[H]\centering
+\caption{Các cặp ảnh trùng hoàn toàn và xử lý khi đánh giá bổ sung.}\label{tab:duplicates}
+\begin{tabular}{llll}\toprule
+Mã ảnh & Tập & Lớp & ID loại khỏi test bổ sung\\\midrule
+7307 / 7309 & train / test & 94 & 7309\\
+8077 / 8067 & val / test & 31 & 8067\\
+7323 / 7328 & test / test & 94 & 7328\\
+7885 / 7886 & test / test & 99 & 7886\\\bottomrule
+\end{tabular}
+\end{table}
+Để giữ khả năng đối chiếu với cách chia Oxford, không xóa ảnh hoặc đổi tập gốc. Ngoài bảng kết quả trên 6.149 ảnh test, báo cáo tính thêm kết quả trên 6.145 ảnh test không trùng: bỏ ảnh trùng train/validation và giữ ID nhỏ nhất trong mỗi nhóm trùng nội bộ test. Quy tắc này được xác định từ nội dung ảnh trước khi huấn luyện; không dựa vào việc mô hình dự đoán đúng hay sai.
+
+\reportfigure[0.83]{figures/00_exact_duplicates.pdf}{Bốn nhóm ảnh trùng RGB. Kiểm tra này chỉ nhận diện trùng hoàn toàn, chưa phát hiện đầy đủ ảnh gần giống.}{fig:duplicates}
+
+\subsection{Ảnh mẫu và nhận xét ban đầu}
+\reportfigure{figures/report_samples.pdf}{Một số ảnh train thuộc tám lớp khác nhau. Nhãn lấy từ metadata; ảnh được chọn để minh họa sự khác nhau về hình dạng, màu và nền.}{fig:samples}
+Các ảnh có thể chứa một bông hoa lớn hoặc nhiều bông nhỏ; nền có thể là lá, đất hoặc vùng tối. Resize trực tiếp về 64\(\times\)64 giúp giảm chi phí tính toán nhưng có thể mất chi tiết và làm thay đổi tỷ lệ đối tượng. Màu sắc là một nguồn thông tin đáng kiểm tra bằng thí nghiệm, nên bài thực hành giữ nhánh pixel RGB và bổ sung histogram HSV bên cạnh HOG trên ảnh xám.

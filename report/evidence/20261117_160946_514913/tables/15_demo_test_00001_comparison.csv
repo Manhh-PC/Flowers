@@ -1,0 +1,2 @@
+image_id,path,split,true_label,true_name,predicted_label,predicted_name,correct,model
+1,data\jpg\image_00001.jpg,test,77,passion flower,27,prince of wales feathers,False,M8_HOG_HSV_KNN_tuned

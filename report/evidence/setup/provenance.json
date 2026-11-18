@@ -1,0 +1,7 @@
+{
+  "source_run": "outputs/20261117_085209_967718",
+  "through_step": 6,
+  "actual_oxford_images": true,
+  "contains_model_metrics": false,
+  "note": "Local Jupyter validation in the project venv; no screenshot of VS Code interaction."
+}

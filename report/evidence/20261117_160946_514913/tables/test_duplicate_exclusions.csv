@@ -1,0 +1,5 @@
+image_id,error,width,height,channels,mode,rgb_sha256,split,label,exclude_reason
+7309,,500,607,3,RGB,0ba7d7666b4974eef20be36ed618cfc42cbf7a1d36963e7d48162f4a4d68cf8e,test,94,duplicate_of_train_or_validation
+7328,,500,1168,3,RGB,76da7ec3355ef8adf6f1e14047b67b703be39e1af45f0e8d400ac68e49650570,test,94,duplicate_within_test
+7886,,623,500,3,RGB,a774edc228d6428f835bb28e665e11660ab6edb1a56b46b33fc1e794bee0de63,test,99,duplicate_within_test
+8067,,667,500,3,RGB,7df9372ea9e2fc5d7293cf36ad21fe71dcbb241d37d6166f32031fd97580c86e,test,31,duplicate_of_train_or_validation

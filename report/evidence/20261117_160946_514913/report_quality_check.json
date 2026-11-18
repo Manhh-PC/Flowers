@@ -1,0 +1,10 @@
+{
+  "run_id": "20261117_160946_514913",
+  "pdf_pages": 22,
+  "compiled_from": "LaTeX with Tectonic 0.17.0",
+  "validation": "Metrics cross-checked with predictions and confusion matrices; all 22 PDF pages rendered and visually reviewed; no overfull boxes, missing glyphs or unresolved references.",
+  "main_notebook": "16 executed code cells, real Oxford data",
+  "saved_model_demo": "3 executed code cells, correct ID 34 and incorrect ID 1; no refitting",
+  "report_sha256": "c213c9d6f00cb2695a5492c6bc8c82d82890dc12b2c6352bb2894656a272d0fb",
+  "pending_user_fields": "Identity, actual contributions, repository link; official course template not supplied; optional genuine VS Code screenshots."
+}

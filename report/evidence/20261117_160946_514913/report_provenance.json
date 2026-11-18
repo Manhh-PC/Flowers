@@ -1,0 +1,14 @@
+{
+  "run_id": "20261117_160946_514913",
+  "data": "actual Oxford Flowers102",
+  "selected_model": "M8_HOG_HSV_KNN_tuned",
+  "source_metrics_sha256": {
+    "validation_results.csv": "fd44859f94e17906b6bdb16f89ee58477a79f574043fb390bfbad32eae86e42e",
+    "test_results.csv": "4377738a28f9011ed3ae4c3b7237b61dbd2777b2a93c4b7f212bbf972fa775a0",
+    "test_results_unique_unseen.csv": "0694c9947ba88f440d090c606492843a6ea850e682a2af6f1bd54696f0d84508"
+  },
+  "demo_correct_index": 30,
+  "demo_correct_image_id": 34,
+  "demo_wrong_index": 0,
+  "note": "Authored prose is specific to this run; review if regenerating with another run."
+}

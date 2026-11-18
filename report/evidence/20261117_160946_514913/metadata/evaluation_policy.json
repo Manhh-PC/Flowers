@@ -1,0 +1,13 @@
+{
+  "official_test_images": 6149,
+  "unique_unseen_test_images": 6145,
+  "excluded_test_ids": [
+    7309,
+    7328,
+    7886,
+    8067
+  ],
+  "train_val_overlap_groups": 0,
+  "policy": "Keep Oxford split unchanged; additionally score test after removing decoded-RGB duplicates of train/val and retaining the lowest image_id within each remaining test duplicate group.",
+  "chosen_using_model_predictions": false
+}

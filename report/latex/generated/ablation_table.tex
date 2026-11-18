@@ -1,0 +1,13 @@
+\begin{table}[H]\centering\small
+\caption{So sánh có kiểm soát: chênh lệch F1-macro test tính theo điểm phần trăm (sau trừ trước).}
+\begin{tabular}{llr}\toprule
+Cặp & Yếu tố thay đổi & Chênh lệch\\\midrule
+M1 $\to$ M3 & Pixel sang HOG; cùng K-NN & -1,91\\
+M2 $\to$ M4 & Pixel sang HOG; cùng cây & -2,85\\
+M3 $\to$ M5 & Thêm HSV; cùng K-NN & 11,41\\
+M3 $\to$ M6 & Tuning K-NN trên HOG & 2,08\\
+M4 $\to$ M7 & Tuning cây trên HOG & 0,83\\
+M5 $\to$ M8 & Tuning K-NN trên HOG+HSV & -0,75\\
+M8 $\to$ M9 & Thêm scale và PCA128 & -11,31\\
+\bottomrule\end{tabular}
+\end{table}

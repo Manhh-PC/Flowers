@@ -1,0 +1,106 @@
+,precision,recall,f1-score,support
+001 pink primrose,0.0032525613920962758,1.0,0.00648403306856865,20.0
+002 hard-leaved pocket orchid,0.0,0.0,0.0,40.0
+003 canterbury bells,0.0,0.0,0.0,20.0
+004 sweet pea,0.0,0.0,0.0,36.0
+005 english marigold,0.0,0.0,0.0,45.0
+006 tiger lily,0.0,0.0,0.0,25.0
+007 moon orchid,0.0,0.0,0.0,20.0
+008 bird of paradise,0.0,0.0,0.0,65.0
+009 monkshood,0.0,0.0,0.0,26.0
+010 globe thistle,0.0,0.0,0.0,25.0
+011 snapdragon,0.0,0.0,0.0,67.0
+012 colt's foot,0.0,0.0,0.0,67.0
+013 king protea,0.0,0.0,0.0,29.0
+014 spear thistle,0.0,0.0,0.0,28.0
+015 yellow iris,0.0,0.0,0.0,29.0
+016 globe-flower,0.0,0.0,0.0,21.0
+017 purple coneflower,0.0,0.0,0.0,65.0
+018 peruvian lily,0.0,0.0,0.0,62.0
+019 balloon flower,0.0,0.0,0.0,29.0
+020 giant white arum lily,0.0,0.0,0.0,36.0
+021 fire lily,0.0,0.0,0.0,20.0
+022 pincushion flower,0.0,0.0,0.0,39.0
+023 fritillary,0.0,0.0,0.0,71.0
+024 red ginger,0.0,0.0,0.0,22.0
+025 grape hyacinth,0.0,0.0,0.0,21.0
+026 corn poppy,0.0,0.0,0.0,21.0
+027 prince of wales feathers,0.0,0.0,0.0,20.0
+028 stemless gentian,0.0,0.0,0.0,46.0
+029 artichoke,0.0,0.0,0.0,58.0
+030 sweet william,0.0,0.0,0.0,65.0
+031 carnation,0.0,0.0,0.0,32.0
+032 garden phlox,0.0,0.0,0.0,25.0
+033 love in the mist,0.0,0.0,0.0,26.0
+034 mexican aster,0.0,0.0,0.0,20.0
+035 alpine sea holly,0.0,0.0,0.0,23.0
+036 ruby-lipped cattleya,0.0,0.0,0.0,55.0
+037 cape flower,0.0,0.0,0.0,88.0
+038 great masterwort,0.0,0.0,0.0,36.0
+039 siam tulip,0.0,0.0,0.0,21.0
+040 lenten rose,0.0,0.0,0.0,47.0
+041 barbeton daisy,0.0,0.0,0.0,107.0
+042 daffodil,0.0,0.0,0.0,39.0
+043 sword lily,0.0,0.0,0.0,110.0
+044 poinsettia,0.0,0.0,0.0,73.0
+045 bolero deep blue,0.0,0.0,0.0,20.0
+046 wallflower,0.0,0.0,0.0,176.0
+047 marigold,0.0,0.0,0.0,47.0
+048 buttercup,0.0,0.0,0.0,51.0
+049 oxeye daisy,0.0,0.0,0.0,29.0
+050 common dandelion,0.0,0.0,0.0,72.0
+051 petunia,0.0,0.0,0.0,238.0
+052 wild pansy,0.0,0.0,0.0,65.0
+053 primula,0.0,0.0,0.0,73.0
+054 sunflower,0.0,0.0,0.0,41.0
+055 pelargonium,0.0,0.0,0.0,51.0
+056 bishop of llandaff,0.0,0.0,0.0,89.0
+057 gaura,0.0,0.0,0.0,47.0
+058 geranium,0.0,0.0,0.0,94.0
+059 orange dahlia,0.0,0.0,0.0,47.0
+060 pink-yellow dahlia?,0.0,0.0,0.0,89.0
+061 cautleya spicata,0.0,0.0,0.0,30.0
+062 japanese anemone,0.0,0.0,0.0,35.0
+063 black-eyed susan,0.0,0.0,0.0,34.0
+064 silverbush,0.0,0.0,0.0,32.0
+065 californian poppy,0.0,0.0,0.0,82.0
+066 osteospermum,0.0,0.0,0.0,41.0
+067 spring crocus,0.0,0.0,0.0,22.0
+068 bearded iris,0.0,0.0,0.0,34.0
+069 windflower,0.0,0.0,0.0,34.0
+070 tree poppy,0.0,0.0,0.0,42.0
+071 gazania,0.0,0.0,0.0,58.0
+072 azalea,0.0,0.0,0.0,76.0
+073 water lily,0.0,0.0,0.0,174.0
+074 rose,0.0,0.0,0.0,151.0
+075 thorn apple,0.0,0.0,0.0,100.0
+076 morning glory,0.0,0.0,0.0,87.0
+077 passion flower,0.0,0.0,0.0,231.0
+078 lotus,0.0,0.0,0.0,117.0
+079 toad lily,0.0,0.0,0.0,21.0
+080 anthurium,0.0,0.0,0.0,85.0
+081 frangipani,0.0,0.0,0.0,146.0
+082 clematis,0.0,0.0,0.0,92.0
+083 hibiscus,0.0,0.0,0.0,111.0
+084 columbine,0.0,0.0,0.0,66.0
+085 desert-rose,0.0,0.0,0.0,43.0
+086 tree mallow,0.0,0.0,0.0,38.0
+087 magnolia,0.0,0.0,0.0,43.0
+088 cyclamen,0.0,0.0,0.0,134.0
+089 watercress,0.0,0.0,0.0,164.0
+090 canna lily,0.0,0.0,0.0,62.0
+091 hippeastrum,0.0,0.0,0.0,56.0
+092 bee balm,0.0,0.0,0.0,46.0
+093 ball moss,0.0,0.0,0.0,26.0
+094 foxglove,0.0,0.0,0.0,142.0
+095 bougainvillea,0.0,0.0,0.0,108.0
+096 camellia,0.0,0.0,0.0,71.0
+097 mallow,0.0,0.0,0.0,46.0
+098 mexican petunia,0.0,0.0,0.0,62.0
+099 bromelia,0.0,0.0,0.0,43.0
+100 blanket flower,0.0,0.0,0.0,29.0
+101 trumpet creeper,0.0,0.0,0.0,38.0
+102 blackberry lily,0.0,0.0,0.0,28.0
+accuracy,0.0032525613920962758,0.0032525613920962758,0.0032525613920962758,0.0032525613920962758
+macro avg,3.1887856785257604e-05,0.00980392156862745,6.356895165263382e-05,6149.0
+weighted avg,1.0579155609355264e-05,0.0032525613920962758,2.1089715623901935e-05,6149.0

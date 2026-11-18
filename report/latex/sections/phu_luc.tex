@@ -1,0 +1,42 @@
+\appendix
+\section{Minh chứng, khả năng tái tạo và khai báo AI}
+\subsection{Nguồn số liệu và cách chạy lại}
+Mọi bảng số liệu trong báo cáo được sinh từ CSV của lần chạy \texttt{\RunID}. Gói minh chứng chứa cấu hình, checksum nguồn, bảng nhãn/split, kết quả từng mô hình, dự đoán từng ảnh và ma trận nhầm lẫn. Không đưa bộ dữ liệu lớn hoặc môi trường Python vào Git; nguồn tải được ghi trong README.
+
+Để tái tạo, mở thư mục dự án bằng VS Code, chọn môi trường Python theo tệp khóa phiên bản của dự án và chạy notebook từ Bước 1 đến Bước 14. Mỗi lần chạy tạo thư mục kết quả riêng. Các số đo thời gian có thể khác theo phần cứng, tải máy và cache; không nên xem thời gian của một lần chạy là hằng số của thuật toán. Notebook kết quả được lưu cùng outputs để đối chiếu với báo cáo.
+
+Các bảng quan trọng trong thư mục kết quả gồm:
+\begin{itemize}
+\item Validation và test: \texttt{validation\_results.csv}, \texttt{test\_results.csv}.
+\item Test không trùng: \texttt{test\_results\_unique\_unseen.csv}.
+\item Thử tham số: \texttt{hyperparameter\_trials.csv}.
+\item Theo lớp: \texttt{selected\_model\_per\_class.csv}.
+\item Cặp nhầm: \texttt{top\_confused\_pairs.csv}.
+\end{itemize}
+Các ảnh mẫu đủ 102 lớp và confusion matrix đầy đủ nằm trong bộ minh chứng; phần chính của báo cáo chỉ chọn hình phù hợp để đọc rõ.
+
+\subsection{Sử dụng công cụ AI}
+ChatGPT/Codex đã hỗ trợ đọc yêu cầu, xây dựng và sửa notebook, kiểm tra mã, thực thi thí nghiệm bằng kernel Jupyter cục bộ, tổng hợp bảng/hình và soạn nội dung báo cáo. Số liệu ở phần kết quả được lấy từ lần chạy trên Oxford Flowers 102; các kiểm thử bằng dữ liệu giả chỉ dùng để kiểm tra chương trình và không được đưa vào kết quả phân loại hoa.
+
+Các nhận xét ảnh trong báo cáo được viết sau khi quan sát ảnh thực tế; giải thích nguyên nhân lỗi được phân biệt với bằng chứng trực tiếp. Người học cần đọc lại, tự kiểm chứng các nhận xét và có khả năng giải thích mã trước khi nộp. Phần xác nhận và đóng góp dưới đây do người học điền theo thực tế, không mặc định đã hoàn tất chỉ vì có báo cáo.
+
+\subsection{Thông tin nhóm và đóng góp thực tế}
+% NGƯỜI HỌC TỰ ĐIỀN: thay các ô dưới đây bằng đóng góp đã làm.
+% Có thể thêm 1-2 dòng nếu nhóm gồm 3-4 thành viên.
+\begin{table}[H]\centering\small
+\begin{tabularx}{\linewidth}{p{3.4cm}Y Y}\toprule
+Thành viên & Công việc thực tế & Minh chứng/commit, phần đã kiểm chứng\\\midrule
+\ThanhVienMot & \textit{(Tự điền)} & \textit{(Tự điền)}\\[12pt]
+\ThanhVienHai & \textit{(Tự điền)} & \textit{(Tự điền)}\\[12pt]\bottomrule
+\end{tabularx}
+\end{table}
+Repository: \RepoNhom.
+
+% ẢNH CHỤP VS CODE LÀ PHẦN BỔ SUNG. Không tạo ảnh chụp giả.
+% Chép các ảnh tự chụp vào screenshots/ rồi biên dịch lại; chỉ mục có ảnh mới xuất hiện.
+\IfFileExists{screenshots/01_moi_truong.png}{\subsection{Ảnh chụp thực hành trong VS Code}
+\reportfigure{screenshots/01_moi_truong.png}{Môi trường thực hành trong VS Code, do người học chụp.}{fig:screen-env}}{}
+\IfFileExists{screenshots/02_chon_mo_hinh.png}{\reportfigure{screenshots/02_chon_mo_hinh.png}{Kết quả validation và mô hình được chốt, do người học chụp.}{fig:screen-val}}{}
+\IfFileExists{screenshots/03_ket_qua_test.png}{\reportfigure{screenshots/03_ket_qua_test.png}{Kết quả đánh giá test trong notebook, do người học chụp.}{fig:screen-test}}{}
+\IfFileExists{screenshots/04_demo_dung.png}{\reportfigure{screenshots/04_demo_dung.png}{Thao tác demo một ảnh dự đoán đúng, do người học chụp.}{fig:screen-right}}{}
+\IfFileExists{screenshots/05_demo_sai.png}{\reportfigure{screenshots/05_demo_sai.png}{Thao tác demo một ảnh dự đoán sai, do người học chụp.}{fig:screen-wrong}}{}

@@ -1,0 +1,35 @@
+\section{Thảo luận và so sánh}
+\subsection{Ảnh hưởng của biểu diễn và tham số}
+\input{generated/ablation_table}
+So sánh M1 với M3 giữ nguyên K-NN nhưng thay pixel bằng HOG. F1-macro test giảm khoảng 1,91 điểm phần trăm. Với cây ở cùng cấu hình độ sâu 20/Gini, thay pixel bằng HOG cũng giảm khoảng 2,85 điểm phần trăm. Vì vậy, dữ liệu thực nghiệm không ủng hộ nhận định HOG luôn tốt hơn pixel. Một cách giải thích khả dĩ là HOG trên ảnh xám 64\(\times\)64 không giữ màu và có thể ghi nhận nhiều biên từ nền; cần thí nghiệm bổ sung để tách riêng ảnh hưởng của từng yếu tố.
+
+M3 và M5 chỉ khác việc thêm nhóm histogram HSV với cách chuẩn hóa đã nêu. F1-macro test tăng từ 4,07\% lên 15,48\%, tức 11,41 điểm phần trăm. Kết quả này cho thấy bổ sung thông tin màu có ích trong cấu hình đang xét. Nó chưa chứng minh màu là yếu tố duy nhất, vì vẫn còn thông tin HOG và cách ghép/chuẩn hóa hai nhóm đặc trưng.
+
+Tuning cải thiện HOG+K-NN và HOG+Cây so với cấu hình cố định, nhưng M8 lại thấp hơn M5 trên test dù cao hơn trên validation. Nguyên nhân có thể liên quan đến quy mô validation nhỏ và độ khác nhau về mẫu giữa hai tập. Báo cáo chỉ ghi nhận giả thuyết này; chưa có nhiều lần chia tập hoặc kiểm định thống kê để khẳng định chênh lệch có ý nghĩa tổng quát.
+
+M9 thấp hơn M8 khoảng 11,31 điểm phần trăm F1-macro test. StandardScaler làm thay đổi trọng số tương đối giữa các chiều, còn PCA tối ưu phương sai thay vì trực tiếp tối ưu phân biệt lớp. Đây là các lý do kỹ thuật có thể dẫn tới suy giảm; thí nghiệm hiện tại chưa tách riêng tác động của scaler và PCA. Vì thế, không kết luận PCA luôn không phù hợp với phân loại hoa.
+
+\subsection{Phân tích theo lớp và các cặp nhầm}
+M8 có 20 lớp đạt F1 bằng 0 trên test chính thức. Ngược lại, lớp 56 (bishop of llandaff) có F1 khoảng 66,26\% trên 89 ảnh, lớp 58 (geranium) đạt 55,11\% trên 94 ảnh. Chất lượng rất không đồng đều giữa các lớp, nên một chỉ số tổng hợp không mô tả đầy đủ khả năng của mô hình.
+
+\input{generated/confused_table}
+Chẳng hạn, 42 ảnh passion flower bị gán thành globe thistle, chiếm 18,18\% số ảnh thật của lớp passion flower. Đây là tỷ lệ theo hàng nhãn thật, không phải Precision của globe thistle. Số lượng nhầm cũng chịu ảnh hưởng bởi support: lớp có nhiều ảnh có thể tạo nhiều lỗi tuyệt đối hơn. Vì vậy, cần đọc cả số lỗi và tỷ lệ theo lớp.
+
+\subsection{Quan sát các trường hợp dự đoán sai}
+\reportfigure{figures/report_errors.pdf}{Sáu ảnh sai được chọn từ bảng dự đoán M8 để phân tích định tính. Đây là các ví dụ có chủ đích sau đánh giá, không phải mẫu đại diện để ước lượng Accuracy.}{fig:errors}
+\begin{enumerate}
+\item \textbf{ID 2988: pink-yellow dahlia? \(\rightarrow\) tiger lily.} Ảnh có hai bông vàng/cam, nhiều lớp cánh nhỏ và vùng lá xanh lớn. Có thể các chi tiết cánh bị suy giảm khi resize, trong khi histogram còn chịu ảnh hưởng màu nền. Dấu hỏi trong tên lớp được giữ theo ánh xạ nguồn, không phải sự không chắc chắn về nhãn của báo cáo.
+\item \textbf{ID 499: cyclamen \(\rightarrow\) fire lily.} Khung hình cận cảnh chứa các cánh màu hồng và không thể hiện rõ toàn bộ bông. Biểu diễn toàn ảnh có thể nhạy với tỷ lệ đối tượng và cách cắt khung hình.
+\item \textbf{ID 6007: windflower \(\rightarrow\) tiger lily.} Bông trắng, nhụy vàng và lá phía dưới đều hiện rõ. Việc vẫn phân loại sai cho thấy nền phức tạp không phải lời giải thích duy nhất; đặc trưng/cấu hình đang dùng có thể chưa tách được hình thái giữa các lớp.
+\item \textbf{ID 3721: primula \(\rightarrow\) monkshood.} Ảnh có nhiều bông trắng và tím trong một khung hình. Histogram tổng hợp trộn các vùng màu và không biểu diễn vị trí từng bông, nên có thể mất cấu trúc cần thiết cho phân loại.
+\item \textbf{ID 7958: trumpet creeper \(\rightarrow\) tiger lily.} Hoa dạng ống màu cam nổi trên nền trời xanh khá đồng nhất. Đây là ví dụ cho thấy ngay cả nền đơn giản cũng chưa đủ; mô hình còn hạn chế trong biểu diễn hình dạng và góc nhìn.
+\item \textbf{ID 1258: rose \(\rightarrow\) pincushion flower.} Hoa hồng ở gần trung tâm, cánh xếp lớp rõ và hậu cảnh mờ. Màu có thể tương đồng với các lớp khác, trong khi cấu trúc cánh nhiều lớp chưa được mô hình khai thác đủ.
+\end{enumerate}
+Các mô tả trên là quan sát trực tiếp từ ảnh, còn lý do mô hình sai là giả thuyết. Chưa thực hiện cắt nền, đo ảnh hưởng từng vùng hoặc thí nghiệm đối chứng để chứng minh mô hình dựa vào vùng nào.
+
+\subsection{Demo đúng/sai và giới hạn sử dụng}
+\reportfigure{figures/15_demo_test_00001.pdf}{Demo ảnh ID 1: nhãn thật passion flower, dự đoán prince of wales feathers. Nhiều lớp có điểm gần hoặc bằng nhau; điểm cao nhất không bảo đảm nhãn đúng.}{fig:demo-wrong}
+\reportfigure{figures/demo_correct.pdf}{Demo một ảnh test được dự đoán đúng sau khi nạp mô hình đã lưu. Ảnh được chọn theo kết quả để minh họa chức năng, không dùng thay cho đánh giá toàn bộ test.}{fig:demo-correct}
+Hai ví dụ hỗ trợ kiểm tra đường đi từ ảnh đến đặc trưng và mô hình đã lưu. Với Accuracy khoảng 15,84\%, hệ thống chưa phù hợp cho sử dụng thực tế cần nhận dạng chính xác. Demo luôn trả về một trong 102 lớp, kể cả khi đầu vào nằm ngoài phạm vi dữ liệu.
+
+Những giới hạn chính còn lại là: chỉ có 10 ảnh train mỗi lớp; resize trực tiếp làm méo tỷ lệ và mất chi tiết; HOG không giữ màu; histogram HSV không giữ vị trí; kiểm tra trùng chưa bao phủ ảnh gần giống; validation chỉ gồm một cách chia; chưa hiệu chỉnh độ tin cậy; chưa kiểm tra ảnh ngoài dataset hoặc các điều kiện chụp khác biệt. Mã và báo cáo hiện tại cũng chưa cung cấp một giao diện GUI hoàn chỉnh.

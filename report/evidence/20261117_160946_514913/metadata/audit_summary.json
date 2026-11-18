@@ -1,0 +1,9 @@
+{
+  "total_images": 8189,
+  "classes": 102,
+  "missing_labels": 0,
+  "broken_images": 0,
+  "exact_duplicate_rows": 8,
+  "cross_split_duplicate_groups": 2,
+  "conflicting_duplicate_groups": 0
+}

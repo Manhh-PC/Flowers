@@ -1,0 +1,71 @@
+\section{Phân tích mã nguồn và chức năng}
+\subsection{Tổ chức chương trình}
+Notebook chính gồm 14 bước, đặt trong cùng thư mục với mã nguồn \texttt{flowers102\_steps.py}. Các đường dẫn dữ liệu tính tương đối từ thư mục dự án, không gắn với tên tài khoản hoặc ổ đĩa cụ thể. Thư mục \texttt{data/} chứa dữ liệu; \texttt{cache/} chứa đặc trưng; \texttt{outputs/<run\_id>/} lưu hình, bảng, cấu hình và mô hình của từng lần chạy; \texttt{report/} chứa báo cáo.
+
+\begin{table}[H]\centering\small
+\caption{Các nhóm chức năng chính của notebook.}\label{tab:functions}
+\begin{tabularx}{\linewidth}{lY Y}\toprule
+Bước & Chức năng & Sản phẩm kiểm chứng\\\midrule
+1-4 & Môi trường, kiểm tra nguồn, nhãn/split, audit & Cấu hình, split manifest, bảng trùng\\
+5-7 & EDA, tiền xử lý, trích đặc trưng & Ảnh mẫu, HOG/HSV, ma trận đặc trưng\\
+8-10 & Baseline, tuning, chọn mô hình & Bảng validation, thử tham số, lựa chọn chốt\\
+11-12 & Test và phân tích lỗi & Metric, confusion matrix, dự đoán từng ảnh\\
+13-14 & Lưu/nạp mô hình, demo, xuất minh chứng & Model joblib, hình demo, gói kết quả\\\bottomrule
+\end{tabularx}
+\end{table}
+
+Hàm \texttt{feature\_matrix} lưu đặc trưng vào cache, đồng thời tạo chữ ký từ ID ảnh, hash RGB, cấu hình và phiên bản thư viện. Điều này giúp tránh dùng nhầm cache khi thay đổi dữ liệu hoặc cách trích đặc trưng. Mỗi hàng của ma trận đặc trưng được xây dựng theo thứ tự cố định của danh sách ảnh và nhãn.
+
+\subsection{Những đoạn xử lý trọng yếu}
+Đoạn mã trích đặc trưng thể hiện rõ việc giữ thông tin màu cho baseline và nhánh HSV, còn HOG dùng ảnh xám. Hàm \texttt{l2} xử lý cả trường hợp norm rất nhỏ.
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+def extract_features(path):
+    rgb = read_rgb(path)
+    h = l2(hog(rgb2gray(rgb), **HOG_CONFIG).astype(np.float32))
+    hsv = rgb2hsv(rgb)
+    color_hist = np.concatenate([
+        np.histogram(hsv[:, :, c], bins=16, range=(0, 1))[0]
+        for c in range(3)
+    ]).astype(np.float32)
+    color_hist = l2(color_hist)
+    return {
+        "pixels": rgb.ravel(), "hog": h,
+        "hog_hsv": np.concatenate([h, color_hist]) / np.sqrt(np.float32(2))
+    }
+\end{lstlisting}
+\end{minipage}\par
+
+Hàm \texttt{fit\_validate} chỉ fit bằng train và dự đoán validation để tính điểm. Hàm \texttt{tune} duyệt lưới tham số, chọn F1-macro cao nhất. Quyết định cuối không lấy từ bảng test:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+eligible = validation[validation.name != "M0_Dummy"]
+winner = eligible.sort_values(
+    "f1_macro", ascending=False, kind="stable"
+).iloc[0]["name"]
+\end{lstlisting}
+\end{minipage}\par
+
+Sau khi chốt, chương trình dự đoán toàn bộ test một lần cho mỗi mô hình. Bộ lọc test không trùng chỉ chọn một tập con của cùng các dự đoán để tính bảng bổ sung; không fit lại:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+pred = model.predict(X["test"][feature])
+clean_test_mask = np.isin(parts["test"].image_id, clean_test_ids)
+clean_scores = score_metrics(
+    y["test"][clean_test_mask], pred[clean_test_mask]
+)
+\end{lstlisting}
+\end{minipage}\par
+Các đoạn trích trên tập trung vào nguyên tắc xử lý; toàn bộ mã, cấu hình và kiểm tra dữ liệu được giữ trong notebook đi kèm.
+
+\subsection{Lưu mô hình và demo một ảnh}
+Mô hình đã chọn được lưu trong \texttt{models/selected\_model.joblib} cùng loại đặc trưng, ánh xạ tên lớp, kích thước ảnh, cấu hình HOG, seed và phiên bản thư viện. Sau khi nạp lại, notebook đối chiếu dự đoán trên năm mẫu test với kết quả trước khi lưu nhằm kiểm tra tính nhất quán.
+
+Hàm \texttt{demo\_test\_image} chọn ảnh trong tập test không trùng theo số thứ tự. Ảnh đi qua đúng hàm trích đặc trưng dùng khi huấn luyện; nhãn thật chỉ được lấy để đối chiếu sau dự đoán. Kết quả gồm nhãn dự đoán, nhãn thật, ĐÚNG/SAI và năm lớp có điểm mô hình cao nhất. Người dùng đổi chỉ số mà không cần huấn luyện lại trong cùng phiên:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+TEST_INDEX = 0  # 0..6144
+demo_result = demo_test_image(TEST_INDEX)
+\end{lstlisting}
+\end{minipage}\par
+Điểm \texttt{predict\_proba} của K-NN ở đây phản ánh tỷ lệ phiếu của các láng giềng, chưa được hiệu chỉnh thành độ tin cậy ngoài thực tế. Nếu nhiều lớp bằng điểm, nhãn chính vẫn lấy từ \texttt{predict}; không chọn lại dựa trên cách sắp xếp biểu đồ. Demo notebook phục vụ minh họa, chưa được xem là một ứng dụng GUI hoàn chỉnh.

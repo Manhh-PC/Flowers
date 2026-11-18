@@ -1,0 +1,39 @@
+\section{Thử nghiệm và kết quả}
+\subsection{Môi trường và thiết lập thực nghiệm}
+Thực nghiệm được thực thi bằng kernel Jupyter cục bộ trên Windows 11, Python 3.12.14, sử dụng CPU. Notebook có 16 ô mã và đã chạy thành công tới Bước 14. Môi trường gồm NumPy 2.5.5, pandas 3.1.1, SciPy 1.18.1, scikit-learn 1.9.1, scikit-image 0.26.0, Matplotlib 3.11.2 và Pillow 13.0.0. Danh sách đầy đủ được lưu trong tệp khóa phiên bản đi kèm.
+
+Lần chạy được báo cáo có mã \texttt{\RunID}, sử dụng seed 42, ảnh 64\(\times\)64, cách chia Oxford và bật thí nghiệm PCA. Cả ba tập có cache đặc trưng khớp chữ ký dữ liệu/cấu hình. Thời gian nạp cache không được gọi là thời gian trích đặc trưng từ ảnh thô. Thời gian trong bảng mô hình chỉ đo từng lời gọi fit/predict, chưa bao gồm audit, vẽ hình hoặc nhập/xuất tệp.
+
+Với một lớp \(c\), ký hiệu TP, FP, FN lần lượt là số dự đoán đúng lớp, gán nhầm vào lớp và bỏ sót lớp:
+\[
+P_c=\frac{TP_c}{TP_c+FP_c},\qquad
+R_c=\frac{TP_c}{TP_c+FN_c},\qquad
+F1_c=\frac{2P_cR_c}{P_c+R_c}.
+\]
+Macro là trung bình không trọng số trên 102 lớp; weighted là trung bình có trọng số theo số ảnh thật của lớp. Khi mẫu số bằng 0, chương trình dùng \texttt{zero\_division=0}. Accuracy là tỷ lệ dự đoán đúng trên tổng số ảnh \cite{metrics}. Báo cáo tính đủ Accuracy, Precision-macro, Recall-macro, F1-macro, F1-weighted và confusion matrix. Các chỉ số tổng hợp không thay thế phân tích lỗi theo lớp và theo ảnh.
+
+\subsection{Kết quả validation và lựa chọn mô hình}
+\input{generated/validation_table}
+M8 có F1-macro validation cao nhất trong các mô hình hợp lệ, đạt \ValFOne\%, với Accuracy \ValAccuracy\%. Cấu hình được chọn là HOG+HSV kết hợp K-NN, \(k=9\), khoảng cách Manhattan và trọng số đều. M8 vì thế được lưu làm mô hình demo trước khi đánh giá test. M7 chọn cây Gini không giới hạn độ sâu; M6 cũng chọn \(k=9\), Manhattan.
+
+\reportfigure{figures/05_knn_tuning.pdf}{Ảnh hưởng của số láng giềng và khoảng cách trên validation. Không sử dụng biểu đồ test để điều chỉnh lưới tham số.}{fig:tuning}
+Tuning HOG+HSV tăng F1-macro validation từ 16,31\% của M5 lên 16,96\% của M8, mức tăng chỉ khoảng 0,65 điểm phần trăm. Chênh lệch nhỏ trên một validation gồm 10 ảnh/lớp cần được diễn giải thận trọng, không bảo đảm thứ hạng sẽ giữ nguyên trên test.
+
+\subsection{Đánh giá trên test chính thức}
+\input{generated/test_table}
+M8 dự đoán đúng \CorrectCount\ trên 6.149 ảnh, đạt Accuracy \TestAccuracy\% và F1-macro \TestFOne\%. So với M1, F1-macro tăng \BaselineGain\ điểm phần trăm, nhưng chất lượng tuyệt đối vẫn thấp. Kết quả chưa đủ để dùng như một công cụ nhận dạng hoa đáng tin cậy ngoài phạm vi thực hành.
+
+M5 có F1-macro test 15,48\%, cao hơn 14,73\% của M8. Đây là quan sát sau khi mở test, nên không thay quyết định lựa chọn M8. Sự đảo thứ hạng cho thấy cấu hình được ưu tiên trên một tập validation hữu hạn không nhất thiết tốt nhất trên tập dữ liệu khác. Không tiếp tục chỉnh tham số dựa trên bảng này.
+
+\reportfigure{figures/09_test_comparison.pdf}{Các độ đo test và thời gian dự đoán của những cấu hình đã xác định trước. Thứ tự trong biểu đồ là thứ tự thí nghiệm, không phải quy tắc chọn lại mô hình.}{fig:testcomparison}
+
+\subsection{Đánh giá bổ sung sau khi loại trùng}
+\input{generated/clean_table}
+Trên 6.145 ảnh test không trùng, M8 đạt Accuracy \CleanAccuracy\% và F1-macro \CleanFOne\%. Chênh lệch so với test gốc rất nhỏ: khoảng 0,006 điểm phần trăm Accuracy và 0,015 điểm phần trăm F1-macro. Tuy nhiên, phát hiện trùng vẫn cần được công bố vì tính độc lập giữa các tập là một phần của quy trình đánh giá, không chỉ phụ thuộc độ lớn của chênh lệch điểm.
+
+\subsection{Thời gian, số chiều và ma trận nhầm lẫn}
+\input{generated/time_table}
+M8 mất khoảng 1,83 giây để dự đoán 6.149 vector test; M5 khoảng 0,15 giây trong cùng lần chạy. Chênh lệch gắn với cấu hình K-NN và cách thực thi khoảng cách; không nên ngoại suy thành thời gian phục vụ một yêu cầu gồm đọc ảnh và trích đặc trưng. M9 giảm còn 128 chiều nhưng F1-macro test chỉ 3,42\%, nên giảm chiều không đồng nghĩa cải thiện phân loại. Mức giảm tương ứng 92,94\% số chiều so với 1.812 chiều của HOG+HSV.
+
+\reportfigure[0.93]{figures/11_confusion_detail.pdf}{Một phần confusion matrix của M8, tập trung các lớp thường nhầm. Hàng là nhãn thật, cột là nhãn dự đoán; các cột ngoài tập con không được hiển thị.}{fig:confusion}
+Ma trận đầy đủ 102\(\times\)102 của từng mô hình được lưu bằng CSV và hình trong bộ minh chứng. Hình trích chi tiết hỗ trợ đọc các nhóm nhầm, nhưng tổng mỗi hàng trong hình có thể nhỏ hơn 1 vì đã bỏ các cột ngoài tập con. Phân tích theo lớp và ảnh cụ thể được trình bày ở phần tiếp theo.

@@ -1,0 +1,7 @@
+﻿image_id,true_name,predicted_name,observed_image_characteristics,hypothesis_not_proven,review_note
+2988,pink-yellow dahlia?,tiger lily,"Hai bông vàng/cam, nhiều lớp cánh nhỏ và vùng lá xanh lớn.",Resize có thể làm mất chi tiết cánh; màu nền có thể ảnh hưởng histogram.,AI-assisted visual inspection; student should review before submission
+499,cyclamen,fire lily,"Cận cảnh cánh hoa hồng, không hiện rõ toàn bộ bông.",Thay đổi tỷ lệ và cắt khung hình có thể làm biểu diễn toàn ảnh khác train.,AI-assisted visual inspection; student should review before submission
+6007,windflower,tiger lily,"Hoa trắng, nhụy vàng; lá và thân hiện phía dưới.",Đặc trưng/cấu hình có thể chưa phân biệt hình thái giữa các lớp.,AI-assisted visual inspection; student should review before submission
+3721,primula,monkshood,Nhiều bông trắng và tím trong cùng khung hình.,"Histogram toàn ảnh trộn vùng màu, không giữ vị trí từng bông.",AI-assisted visual inspection; student should review before submission
+7958,trumpet creeper,tiger lily,Hoa dạng ống cam trên nền trời xanh khá đồng nhất.,Hình dạng/góc nhìn còn khó; không thể quy mọi lỗi cho nền phức tạp.,AI-assisted visual inspection; student should review before submission
+1258,rose,pincushion flower,"Hoa hồng trung tâm, cánh xếp lớp rõ, hậu cảnh mờ.",Màu có thể giống lớp khác; cấu trúc cánh chưa được biểu diễn đủ.,AI-assisted visual inspection; student should review before submission

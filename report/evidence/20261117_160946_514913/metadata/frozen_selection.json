@@ -1,0 +1,180 @@
+{
+  "selected_name": "M8_HOG_HSV_KNN_tuned",
+  "criterion": "validation f1_macro; stable first tie",
+  "test_used_for_selection": false,
+  "refit_train_val": false,
+  "models": {
+    "M0_Dummy": {
+      "feature": "pixels",
+      "params": {
+        "constant": null,
+        "random_state": null,
+        "strategy": "most_frequent"
+      }
+    },
+    "M1_Pixel_KNN_baseline": {
+      "feature": "pixels",
+      "params": {
+        "algorithm": "brute",
+        "leaf_size": 30,
+        "metric": "euclidean",
+        "metric_params": null,
+        "n_jobs": 2,
+        "n_neighbors": 5,
+        "p": 2,
+        "weights": "uniform"
+      }
+    },
+    "M2_Pixel_Tree_fixed": {
+      "feature": "pixels",
+      "params": {
+        "ccp_alpha": 0.0,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": 20,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 1,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+      }
+    },
+    "M3_HOG_KNN_fixed": {
+      "feature": "hog",
+      "params": {
+        "algorithm": "brute",
+        "leaf_size": 30,
+        "metric": "euclidean",
+        "metric_params": null,
+        "n_jobs": 2,
+        "n_neighbors": 5,
+        "p": 2,
+        "weights": "uniform"
+      }
+    },
+    "M4_HOG_Tree_fixed": {
+      "feature": "hog",
+      "params": {
+        "ccp_alpha": 0.0,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": 20,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 1,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+      }
+    },
+    "M5_HOG_HSV_KNN_fixed": {
+      "feature": "hog_hsv",
+      "params": {
+        "algorithm": "brute",
+        "leaf_size": 30,
+        "metric": "euclidean",
+        "metric_params": null,
+        "n_jobs": 2,
+        "n_neighbors": 5,
+        "p": 2,
+        "weights": "uniform"
+      }
+    },
+    "M6_HOG_KNN_tuned": {
+      "feature": "hog",
+      "params": {
+        "algorithm": "brute",
+        "leaf_size": 30,
+        "metric": "manhattan",
+        "metric_params": null,
+        "n_jobs": 2,
+        "n_neighbors": 9,
+        "p": 2,
+        "weights": "uniform"
+      }
+    },
+    "M7_HOG_Tree_tuned": {
+      "feature": "hog",
+      "params": {
+        "ccp_alpha": 0.0,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": null,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 1,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+      }
+    },
+    "M8_HOG_HSV_KNN_tuned": {
+      "feature": "hog_hsv",
+      "params": {
+        "algorithm": "brute",
+        "leaf_size": 30,
+        "metric": "manhattan",
+        "metric_params": null,
+        "n_jobs": 2,
+        "n_neighbors": 9,
+        "p": 2,
+        "weights": "uniform"
+      }
+    },
+    "M9_HOG_HSV_PCA_KNN": {
+      "feature": "hog_hsv",
+      "params": {
+        "memory": null,
+        "steps": [
+          [
+            "scale",
+            "StandardScaler()"
+          ],
+          [
+            "pca",
+            "PCA(n_components=128, random_state=42, svd_solver='randomized')"
+          ],
+          [
+            "knn",
+            "KNeighborsClassifier(algorithm='brute', metric='manhattan', n_jobs=2,\n                     n_neighbors=9)"
+          ]
+        ],
+        "transform_input": null,
+        "verbose": false,
+        "scale": "StandardScaler()",
+        "pca": "PCA(n_components=128, random_state=42, svd_solver='randomized')",
+        "knn": "KNeighborsClassifier(algorithm='brute', metric='manhattan', n_jobs=2,\n                     n_neighbors=9)",
+        "scale__copy": true,
+        "scale__with_mean": true,
+        "scale__with_std": true,
+        "pca__copy": true,
+        "pca__iterated_power": "auto",
+        "pca__n_components": 128,
+        "pca__n_oversamples": 10,
+        "pca__power_iteration_normalizer": "auto",
+        "pca__random_state": 42,
+        "pca__svd_solver": "randomized",
+        "pca__tol": 0.0,
+        "pca__whiten": false,
+        "knn__algorithm": "brute",
+        "knn__leaf_size": 30,
+        "knn__metric": "manhattan",
+        "knn__metric_params": null,
+        "knn__n_jobs": 2,
+        "knn__n_neighbors": 9,
+        "knn__p": 2,
+        "knn__weights": "uniform"
+      }
+    }
+  }
+}

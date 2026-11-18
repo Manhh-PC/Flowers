@@ -1,0 +1,53 @@
+{
+  "completed": true,
+  "selected_model": "M8_HOG_HSV_KNN_tuned",
+  "selected_validation": {
+    "name": "M8_HOG_HSV_KNN_tuned",
+    "feature": "hog_hsv",
+    "accuracy": 0.1931372549019608,
+    "precision_macro": 0.2402438550074249,
+    "recall_macro": 0.19313725490196076,
+    "f1_macro": 0.16963557936494925,
+    "f1_weighted": 0.1696355793649492,
+    "fit_seconds": 0.0013371000532060862,
+    "predict_seconds": 0.42823339998722076,
+    "parameters": "{'algorithm': 'brute', 'leaf_size': 30, 'metric': 'manhattan', 'metric_params': None, 'n_jobs': 2, 'n_neighbors': 9, 'p': 2, 'weights': 'uniform'}"
+  },
+  "selected_test": {
+    "name": "M8_HOG_HSV_KNN_tuned",
+    "feature": "hog_hsv",
+    "accuracy": 0.15839973979508865,
+    "precision_macro": 0.23834329298972465,
+    "recall_macro": 0.1807754177935968,
+    "f1_macro": 0.14731828512926184,
+    "f1_weighted": 0.1421762098389316,
+    "predict_seconds": 1.825247299973853,
+    "selected_on_validation": true
+  },
+  "selected_test_unique_unseen": {
+    "name": "M8_HOG_HSV_KNN_tuned",
+    "feature": "hog_hsv",
+    "accuracy": 0.15834011391375102,
+    "precision_macro": 0.238158353621723,
+    "recall_macro": 0.18063776869195972,
+    "f1_macro": 0.14716789840481215,
+    "f1_weighted": 0.14208991300325338,
+    "evaluated_images": 6145,
+    "selected_on_validation": true
+  },
+  "evaluation_policy": {
+    "official_test_images": 6149,
+    "unique_unseen_test_images": 6145,
+    "excluded_test_ids": [
+      7309,
+      7328,
+      7886,
+      8067
+    ],
+    "train_val_overlap_groups": 0,
+    "policy": "Keep Oxford split unchanged; additionally score test after removing decoded-RGB duplicates of train/val and retaining the lowest image_id within each remaining test duplicate group.",
+    "chosen_using_model_predictions": false
+  },
+  "number_of_figures": 21,
+  "note": "Kết quả sinh từ lần chạy này; chưa thay thế phần thảo luận do người học viết."
+}

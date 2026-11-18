@@ -1,0 +1,26 @@
+{
+  "image_size": 64,
+  "resize": "bilinear",
+  "pixel_range": [
+    0,
+    1
+  ],
+  "hog": {
+    "orientations": 9,
+    "pixels_per_cell": [
+      8,
+      8
+    ],
+    "cells_per_block": [
+      2,
+      2
+    ],
+    "block_norm": "L2-Hys",
+    "transform_sqrt": true,
+    "feature_vector": true
+  },
+  "hog_global_norm": "L2",
+  "hsv_bins_per_channel": 16,
+  "color_hist_norm": "L2",
+  "combined_weighting": "equal L2 groups / sqrt(2)"
+}
