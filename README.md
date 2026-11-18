@@ -1,4 +1,4 @@
-# Đề tài 7: Phân loại hoa - FIT4013
+# Đề tài 7: Phân loại hoa
 
 Thực hành **Jupyter Notebook (.ipynb) trong VS Code**, dùng Python và Oxford Flowers 102. Chạy từng ô như Colab; dữ liệu và kết quả lưu trên máy. Đường dẫn dữ liệu trong mã tính tương đối từ thư mục dự án.
 
